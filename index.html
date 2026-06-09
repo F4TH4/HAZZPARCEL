@@ -1,0 +1,1549 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HazzParcel – Sistem Informasi Pengiriman Paket</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/dist/tabler-icons.min.css" />
+  <link rel="icon" href="box.png" type="image/png">
+  <style>
+/* ============================================================
+   HazzParcel — style.css
+   ============================================================ */
+
+/* ---- Reset & Base ---- */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --blue:        #1A6FDB;
+  --blue-dark:   #0C4FA0;
+  --blue-light:  #E6F1FB;
+  --blue-mid:    #B5D4F4;
+  --teal:        #1D9E75;
+  --teal-light:  #E1F5EE;
+  --teal-mid:    #9FE1CB;
+  --amber-light: #FAEEDA;
+  --amber:       #854F0B;
+  --red:         #E24B4A;
+  --red-light:   #FCEBEB;
+  --gray-page:   #f5f6fa;
+  --gray-border: rgba(0,0,0,0.10);
+  --gray-muted:  #6b7280;
+  --gray-100:    #D3D1C7;
+  --white:       #ffffff;
+  --text:        #1a1a2e;
+  --radius:      10px;
+  --radius-lg:   16px;
+  --shadow:      0 1px 4px rgba(0,0,0,0.07);
+  --font:        system-ui, 'Segoe UI', sans-serif;
+}
+
+body {
+  font-family: var(--font);
+  background: var(--gray-page);
+  color: var(--text);
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+/* ============================================================
+   NAVBAR
+   ============================================================ */
+#navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: var(--white);
+  border-bottom: 0.5px solid var(--gray-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 60px;
+  gap: 1rem;
+}
+
+.nav-logo {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--blue);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.nav-links {
+  display: flex;
+  gap: 2px;
+  flex: 1;
+  justify-content: center;
+}
+
+.nav-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 8px;
+  font-size: 14px;
+  color: var(--gray-muted);
+  font-family: var(--font);
+  transition: background 0.15s, color 0.15s;
+  white-space: nowrap;
+}
+
+.nav-btn:hover { background: var(--blue-light); color: var(--blue); }
+.nav-btn.active { background: var(--blue-light); color: var(--blue); font-weight: 500; }
+
+.nav-cta { white-space: nowrap; }
+
+/* ============================================================
+   PAGES
+   ============================================================ */
+.page { display: none; padding: 2rem; max-width: 1100px; margin: 0 auto; }
+.page.active { display: block; }
+.hidden { display: none !important; }
+
+/* ============================================================
+   HERO
+   ============================================================ */
+.hero {
+  background: linear-gradient(135deg, #0C4FA0 0%, #1A6FDB 55%, #1D9E75 100%);
+  border-radius: var(--radius-lg);
+  padding: 3rem 2.5rem;
+  color: #fff;
+  display: flex;
+  gap: 2rem;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.hero-text h1 { font-size: 26px; font-weight: 500; margin-bottom: 0.75rem; line-height: 1.35; }
+.hero-text p  { font-size: 15px; opacity: 0.88; margin-bottom: 1.5rem; max-width: 420px; }
+
+.hero-btns { display: flex; gap: 12px; flex-wrap: wrap; }
+
+.hero-icon {
+  font-size: 100px;
+  opacity: 0.18;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+/* ============================================================
+   STATS
+   ============================================================ */
+.stats-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 2rem;
+}
+
+.stat-card {
+  background: var(--white);
+  border: 0.5px solid var(--gray-border);
+  border-radius: var(--radius);
+  padding: 1rem 1.25rem;
+  box-shadow: var(--shadow);
+}
+
+.stat-card .label { font-size: 12px; color: var(--gray-muted); margin-bottom: 4px; }
+.stat-card .value { font-size: 24px; font-weight: 600; color: var(--text); }
+.stat-card .sub   { font-size: 12px; color: var(--gray-muted); margin-top: 3px; }
+.stat-card .sub.success { color: var(--teal); }
+.stat-card .sub.info    { color: var(--blue); }
+.stat-card .sub.warning { color: #854F0B; }
+
+/* ============================================================
+   CARDS
+   ============================================================ */
+.card {
+  background: var(--white);
+  border: 0.5px solid var(--gray-border);
+  border-radius: var(--radius-lg);
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  box-shadow: var(--shadow);
+}
+
+.card-header-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.section-title i { color: var(--blue); }
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+  background: var(--blue);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 22px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s, transform 0.1s;
+}
+.btn-primary:hover  { background: var(--blue-dark); }
+.btn-primary:active { transform: scale(0.98); }
+
+.btn-secondary {
+  background: var(--white);
+  color: var(--gray-muted);
+  border: 0.5px solid var(--gray-border);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+.btn-secondary:hover { background: var(--gray-page); }
+
+.btn-white {
+  background: #fff;
+  color: var(--blue);
+  border: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+.btn-white:hover { background: var(--blue-light); }
+
+.btn-outline {
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,0.6);
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: background 0.15s;
+}
+.btn-outline:hover { background: rgba(255,255,255,0.12); }
+
+.btn-link {
+  background: none;
+  border: none;
+  color: var(--blue);
+  font-size: 14px;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 0;
+}
+.btn-link:hover { text-decoration: underline; }
+
+.btn-success-sm {
+  background: var(--teal-light);
+  color: #0F6E56;
+  border: 0.5px solid var(--teal-mid);
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.15s;
+}
+.btn-success-sm:hover { background: #9FE1CB; }
+
+.btn-danger-sm {
+  background: var(--red-light);
+  color: var(--red);
+  border: 0.5px solid #F09595;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.15s;
+}
+.btn-danger-sm:hover { background: #F7C1C1; }
+
+.btn-amber-sm {
+  background: var(--amber-light);
+  color: var(--amber);
+  border: 0.5px solid #FAC775;
+  border-radius: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font);
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  transition: background 0.15s;
+}
+.btn-amber-sm:hover { background: #FAC775; }
+
+/* ============================================================
+   BADGES
+   ============================================================ */
+.badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.badge-green  { background: var(--teal-light);   color: #0F6E56; }
+.badge-blue   { background: var(--blue-light);   color: #185FA5; }
+.badge-amber  { background: var(--amber-light);  color: var(--amber); }
+.badge-red    { background: var(--red-light);    color: #A32D2D; }
+
+/* ============================================================
+   TABLE
+   ============================================================ */
+.table-wrap { overflow-x: auto; }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px; min-width: 640px; }
+
+thead th {
+  text-align: left;
+  padding: 10px 12px;
+  font-size: 12px;
+  color: var(--gray-muted);
+  font-weight: 500;
+  border-bottom: 0.5px solid var(--gray-border);
+  white-space: nowrap;
+  background: var(--white);
+}
+
+tbody tr { border-bottom: 0.5px solid rgba(0,0,0,0.05); transition: background 0.12s; }
+tbody tr:last-child { border-bottom: none; }
+tbody tr:hover { background: var(--gray-page); }
+tbody td { padding: 11px 12px; }
+
+.action-btns { display: flex; gap: 6px; }
+
+/* ============================================================
+   FORM
+   ============================================================ */
+.form-section {
+  border: 0.5px solid var(--gray-border);
+  border-radius: var(--radius);
+  padding: 1.25rem 1.25rem 1rem;
+  margin-bottom: 1.25rem;
+}
+
+.form-section legend {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--blue);
+  padding: 0 6px;
+}
+
+.form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.form-full { grid-column: 1 / -1; }
+
+.form-group { display: flex; flex-direction: column; gap: 4px; }
+
+.form-group label {
+  font-size: 13px;
+  color: var(--gray-muted);
+  font-weight: 500;
+}
+
+.req { color: var(--red); }
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: var(--font);
+  background: var(--white);
+  color: var(--text);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(26,111,219,0.1);
+}
+
+.form-group input.error,
+.form-group select.error,
+.form-group textarea.error {
+  border-color: var(--red);
+  box-shadow: 0 0 0 3px rgba(226,75,74,0.1);
+}
+
+.form-group textarea { resize: vertical; min-height: 80px; }
+
+.field-error { font-size: 12px; color: var(--red); min-height: 16px; }
+
+.ongkir-box {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--blue-light);
+  border: 0.5px solid var(--blue-mid);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  margin-top: 1rem;
+}
+.ongkir-label { font-size: 14px; color: #185FA5; font-weight: 500; }
+.ongkir-value { font-size: 18px; font-weight: 600; color: var(--blue-dark); }
+
+.form-actions { display: flex; gap: 12px; margin-top: 1.25rem; align-items: center; flex-wrap: wrap; }
+
+.alert-success {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--teal-light);
+  border: 0.5px solid var(--teal-mid);
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 13px;
+  color: #085041;
+  margin-top: 0.75rem;
+}
+.alert-success i { font-size: 18px; }
+
+/* ============================================================
+   FILTER BAR
+   ============================================================ */
+.filter-bar {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.search-wrap {
+  position: relative;
+  flex: 1;
+  min-width: 180px;
+}
+
+.search-wrap input {
+  width: 100%;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 9px 12px 9px 36px;
+  font-size: 14px;
+  font-family: var(--font);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.search-wrap input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(26,111,219,0.1);
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--gray-muted);
+  font-size: 16px;
+  pointer-events: none;
+}
+
+.filter-bar select {
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 9px 12px;
+  font-size: 14px;
+  font-family: var(--font);
+  background: var(--white);
+  color: var(--text);
+  outline: none;
+  cursor: pointer;
+}
+.filter-bar select:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(26,111,219,0.1);
+}
+
+/* ============================================================
+   PAGINATION
+   ============================================================ */
+.pagination {
+  display: flex;
+  gap: 4px;
+  justify-content: center;
+  margin-top: 1rem;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  border: 0.5px solid var(--gray-border);
+  background: var(--white);
+  color: var(--text);
+  border-radius: 6px;
+  padding: 5px 11px;
+  font-size: 13px;
+  cursor: pointer;
+  font-family: var(--font);
+  transition: background 0.12s;
+}
+.pagination button:hover { background: var(--blue-light); color: var(--blue); }
+.pagination button.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  color: var(--gray-muted);
+}
+.empty-state i  { font-size: 40px; opacity: 0.4; display: block; margin-bottom: 0.75rem; }
+.empty-state p  { font-size: 14px; }
+
+/* ============================================================
+   LACAK PAGE
+   ============================================================ */
+.lacak-card { max-width: 680px; margin: 0 auto; }
+.lacak-desc { font-size: 14px; color: var(--gray-muted); margin-bottom: 1.25rem; }
+
+.lacak-input-row {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 0.75rem;
+}
+.lacak-input-row input {
+  flex: 1;
+  border: 0.5px solid rgba(0,0,0,0.15);
+  border-radius: 8px;
+  padding: 10px 14px;
+  font-size: 14px;
+  font-family: var(--font);
+  background: var(--white);
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.lacak-input-row input:focus {
+  border-color: var(--blue);
+  box-shadow: 0 0 0 3px rgba(26,111,219,0.1);
+}
+
+.lacak-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--red-light);
+  border: 0.5px solid #F09595;
+  border-radius: 8px;
+  padding: 0.65rem 1rem;
+  font-size: 13px;
+  color: #A32D2D;
+  margin-bottom: 0.75rem;
+}
+
+.track-result {
+  border-top: 0.5px solid var(--gray-border);
+  padding-top: 1.25rem;
+  margin-top: 1rem;
+}
+
+.tr-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.tr-id  { font-size: 16px; font-weight: 600; }
+.tr-sub { font-size: 13px; color: var(--gray-muted); margin-top: 2px; }
+
+.tr-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  font-size: 13px;
+  margin-bottom: 1.25rem;
+}
+.tr-item .lbl { color: var(--gray-muted); font-size: 12px; }
+.tr-item .val { font-weight: 500; margin-top: 2px; }
+
+.timeline-title { font-size: 13px; font-weight: 500; color: var(--gray-muted); margin-bottom: 0.75rem; }
+
+/* ============================================================
+   TIMELINE
+   ============================================================ */
+.timeline { padding-left: 0.5rem; }
+
+.tl-item {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 0.75rem;
+  position: relative;
+}
+
+.tl-dot-wrap { position: relative; display: flex; flex-direction: column; align-items: center; }
+
+.tl-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 4px;
+  z-index: 1;
+}
+.tl-dot.done    { background: var(--teal); }
+.tl-dot.active  { background: var(--blue); }
+.tl-dot.pending { background: var(--gray-100); }
+
+.tl-line {
+  width: 2px;
+  flex: 1;
+  background: var(--gray-100);
+  margin-top: 4px;
+  min-height: 16px;
+}
+
+.tl-content { padding-bottom: 4px; }
+.tl-content p    { font-size: 14px; font-weight: 500; }
+.tl-content span { font-size: 12px; color: var(--gray-muted); }
+.tl-item.pending-item .tl-content { opacity: 0.5; }
+
+/* ============================================================
+   MODAL
+   ============================================================ */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.modal-box {
+  background: var(--white);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 560px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.18);
+}
+
+.modal-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem 1rem;
+  border-bottom: 0.5px solid var(--gray-border);
+}
+
+.modal-resi { font-size: 17px; font-weight: 600; }
+.modal-sub  { font-size: 13px; color: var(--gray-muted); margin-top: 2px; }
+
+.modal-close {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: var(--gray-muted);
+  padding: 2px;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.modal-close:hover { color: var(--text); }
+
+.modal-body {
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+  flex: 1;
+}
+
+.modal-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 1.25rem;
+}
+.modal-item .lbl { font-size: 12px; color: var(--gray-muted); }
+.modal-item .val { font-size: 14px; font-weight: 500; margin-top: 2px; }
+
+.modal-section-title { font-size: 13px; font-weight: 500; color: var(--gray-muted); margin-bottom: 0.75rem; }
+
+.modal-footer {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  padding: 1rem 1.5rem;
+  border-top: 0.5px solid var(--gray-border);
+}
+
+/* ============================================================
+   PRINT
+   ============================================================ */
+@media print {
+  #navbar, .form-actions, .filter-bar, .pagination, .modal-footer { display: none; }
+  body { background: white; }
+  .card { box-shadow: none; border: 1px solid #ccc; }
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 768px) {
+  #navbar { padding: 0 1rem; }
+  .nav-links { display: none; }
+  .page { padding: 1rem; }
+  .hero { flex-direction: column; padding: 2rem 1.5rem; }
+  .hero-icon { display: none; }
+  .stats-row { grid-template-columns: 1fr 1fr; }
+  .form-grid { grid-template-columns: 1fr; }
+  .form-full { grid-column: 1; }
+  .modal-grid { grid-template-columns: 1fr; }
+  .tr-grid { grid-template-columns: 1fr; }
+}
+  </style>
+</head>
+<body>
+
+<!-- ===================== NAVBAR ===================== -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <i class="ti ti-package"></i> HazzParcel
+  </div>
+  <div class="nav-links">
+    <button class="nav-btn active" data-page="beranda">Beranda</button>
+    <button class="nav-btn" data-page="kirim">Kirim Paket</button>
+    <button class="nav-btn" data-page="riwayat">Riwayat</button>
+    <button class="nav-btn" data-page="lacak">Lacak Paket</button>
+  </div>
+  <button class="btn-primary nav-cta" data-page="kirim">
+    <i class="ti ti-send"></i> Kirim Sekarang
+  </button>
+</nav>
+
+<!-- ===================== MODAL DETAIL ===================== -->
+<div id="modal-overlay" class="modal-overlay hidden">
+  <div class="modal-box">
+    <div class="modal-header">
+      <div>
+        <div class="modal-resi" id="modal-resi"></div>
+        <div class="modal-sub" id="modal-sub"></div>
+      </div>
+      <button class="modal-close" id="modal-close"><i class="ti ti-x"></i></button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-grid" id="modal-grid"></div>
+      <div class="modal-section-title">Riwayat Perjalanan</div>
+      <div class="timeline" id="modal-timeline"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn-secondary" id="modal-cetak">
+        <i class="ti ti-printer"></i> Cetak Resi
+      </button>
+      <button class="btn-primary" id="modal-tutup">Tutup</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HALAMAN BERANDA ===================== -->
+<div id="beranda" class="page active">
+  <div class="hero">
+    <div class="hero-text">
+      <h1>Kirim Paket ke Seluruh Indonesia, Cepat &amp; Aman</h1>
+      <p>Kelola pengiriman, lacak status real-time, dan pantau riwayat transaksi dalam satu platform terpadu.</p>
+      <div class="hero-btns">
+        <button class="btn-white" data-page="kirim"><i class="ti ti-send"></i> Kirim Sekarang</button>
+        <button class="btn-outline" data-page="lacak"><i class="ti ti-map-pin"></i> Lacak Paket</button>
+      </div>
+    </div>
+    <div class="hero-icon"><i class="ti ti-package"></i></div>
+  </div>
+
+  <div class="stats-row" id="stats-row">
+    <div class="stat-card">
+      <div class="label">Total Pengiriman</div>
+      <div class="value" id="stat-total">0</div>
+      <div class="sub"><i class="ti ti-database"></i> semua data</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Terkirim</div>
+      <div class="value" id="stat-terkirim">0</div>
+      <div class="sub success"><i class="ti ti-check"></i> selesai</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Dalam Perjalanan</div>
+      <div class="value" id="stat-perjalanan">0</div>
+      <div class="sub info"><i class="ti ti-truck"></i> aktif</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Diproses</div>
+      <div class="value" id="stat-diproses">0</div>
+      <div class="sub warning"><i class="ti ti-clock"></i> menunggu</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-header-row">
+      <div class="section-title">Pengiriman Terbaru</div>
+      <button class="btn-link" data-page="riwayat">Lihat semua <i class="ti ti-arrow-right"></i></button>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No. Resi</th>
+            <th>Pengirim</th>
+            <th>Tujuan</th>
+            <th>Layanan</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-beranda"></tbody>
+      </table>
+    </div>
+    <div class="empty-state hidden" id="empty-beranda">
+      <i class="ti ti-inbox"></i>
+      <p>Belum ada pengiriman. <button class="btn-link" data-page="kirim">Buat pengiriman pertama</button></p>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HALAMAN KIRIM PAKET ===================== -->
+<div id="kirim" class="page hidden">
+  <div class="card">
+    <div class="section-title"><i class="ti ti-package"></i> Form Pengiriman Paket</div>
+
+    <fieldset class="form-section">
+      <legend>Data Pengirim</legend>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="f-pengirim">Nama Pengirim <span class="req">*</span></label>
+          <input type="text" id="f-pengirim" placeholder="Nama lengkap" />
+          <span class="field-error" id="err-pengirim"></span>
+        </div>
+        <div class="form-group">
+          <label for="f-telp-pengirim">No. Telepon <span class="req">*</span></label>
+          <input type="tel" id="f-telp-pengirim" placeholder="08xx-xxxx-xxxx" />
+          <span class="field-error" id="err-telp-pengirim"></span>
+        </div>
+        <div class="form-group form-full">
+          <label for="f-alamat-pengirim">Alamat Pengirim <span class="req">*</span></label>
+          <textarea id="f-alamat-pengirim" placeholder="Jl. contoh no. 1, kelurahan, kecamatan, kota"></textarea>
+          <span class="field-error" id="err-alamat-pengirim"></span>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend>Data Penerima</legend>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="f-penerima">Nama Penerima <span class="req">*</span></label>
+          <input type="text" id="f-penerima" placeholder="Nama lengkap" />
+          <span class="field-error" id="err-penerima"></span>
+        </div>
+        <div class="form-group">
+          <label for="f-telp-penerima">No. Telepon <span class="req">*</span></label>
+          <input type="tel" id="f-telp-penerima" placeholder="08xx-xxxx-xxxx" />
+          <span class="field-error" id="err-telp-penerima"></span>
+        </div>
+        <div class="form-group form-full">
+          <label for="f-kota-tujuan">Kota Tujuan <span class="req">*</span></label>
+          <input type="text" id="f-kota-tujuan" placeholder="cth: Bandung, Surabaya, Medan" />
+          <span class="field-error" id="err-kota-tujuan"></span>
+        </div>
+        <div class="form-group form-full">
+          <label for="f-alamat-tujuan">Alamat Lengkap Penerima <span class="req">*</span></label>
+          <textarea id="f-alamat-tujuan" placeholder="Jl. tujuan no. xx, kelurahan, kecamatan, kota"></textarea>
+          <span class="field-error" id="err-alamat-tujuan"></span>
+        </div>
+      </div>
+    </fieldset>
+
+    <fieldset class="form-section">
+      <legend>Detail Paket</legend>
+      <div class="form-grid">
+        <div class="form-group">
+          <label for="f-jenis">Jenis Paket <span class="req">*</span></label>
+          <select id="f-jenis">
+            <option value="">Pilih jenis paket</option>
+            <option>Dokumen</option>
+            <option>Paket Kecil (&lt;1 kg)</option>
+            <option>Paket Sedang (1–5 kg)</option>
+            <option>Paket Besar (&gt;5 kg)</option>
+            <option>Barang Elektronik</option>
+            <option>Makanan / Minuman</option>
+          </select>
+          <span class="field-error" id="err-jenis"></span>
+        </div>
+        <div class="form-group">
+          <label for="f-berat">Berat Paket (kg) <span class="req">*</span></label>
+          <input type="number" id="f-berat" placeholder="cth: 2.5" min="0.1" step="0.1" />
+          <span class="field-error" id="err-berat"></span>
+        </div>
+        <div class="form-group">
+          <label for="f-layanan">Layanan Pengiriman <span class="req">*</span></label>
+          <select id="f-layanan">
+            <option value="">Pilih layanan</option>
+            <option value="Same Day">Same Day</option>
+            <option value="Express">Express (1–2 hari)</option>
+            <option value="Reguler">Reguler (3–5 hari)</option>
+            <option value="Kargo">Kargo (5–7 hari)</option>
+          </select>
+          <span class="field-error" id="err-layanan"></span>
+        </div>
+        <div class="form-group">
+          <label for="f-asuransi">Asuransi Paket</label>
+          <select id="f-asuransi">
+            <option value="Tidak">Tanpa Asuransi</option>
+            <option value="Ya">Dengan Asuransi (+Rp 5.000)</option>
+          </select>
+        </div>
+        <div class="form-group form-full">
+          <label for="f-catatan">Catatan Tambahan</label>
+          <textarea id="f-catatan" placeholder="Instruksi khusus, kondisi barang, dsb."></textarea>
+        </div>
+      </div>
+
+      <div class="ongkir-box" id="ongkir-box">
+        <div class="ongkir-label">Estimasi Ongkir</div>
+        <div class="ongkir-value" id="ongkir-value">—</div>
+      </div>
+    </fieldset>
+
+    <div class="form-actions">
+      <button class="btn-primary" id="btn-kirim"><i class="ti ti-send"></i> Kirim Paket</button>
+      <button class="btn-secondary" id="btn-reset"><i class="ti ti-refresh"></i> Reset</button>
+    </div>
+
+    <div class="alert-success hidden" id="alert-kirim">
+      <i class="ti ti-circle-check"></i>
+      <span id="alert-kirim-msg">Paket berhasil didaftarkan!</span>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== HALAMAN RIWAYAT ===================== -->
+<div id="riwayat" class="page hidden">
+  <div class="card">
+    <div class="card-header-row">
+      <div class="section-title"><i class="ti ti-history"></i> Riwayat Pengiriman</div>
+      <button class="btn-danger-sm" id="btn-hapus-semua"><i class="ti ti-trash"></i> Hapus Semua</button>
+    </div>
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <i class="ti ti-search search-icon"></i>
+        <input type="text" id="search-riwayat" placeholder="Cari resi, nama, atau kota..." />
+      </div>
+      <select id="filter-status">
+        <option value="">Semua Status</option>
+        <option>Terkirim</option>
+        <option>Dalam Perjalanan</option>
+        <option>Diproses</option>
+        <option>Dibatalkan</option>
+      </select>
+      <select id="filter-layanan">
+        <option value="">Semua Layanan</option>
+        <option>Same Day</option>
+        <option>Express</option>
+        <option>Reguler</option>
+        <option>Kargo</option>
+      </select>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>No. Resi</th>
+            <th>Pengirim</th>
+            <th>Penerima</th>
+            <th>Tujuan</th>
+            <th>Layanan</th>
+            <th>Berat</th>
+            <th>Ongkir</th>
+            <th>Status</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="tabel-riwayat"></tbody>
+      </table>
+    </div>
+    <div class="empty-state hidden" id="empty-riwayat">
+      <i class="ti ti-inbox"></i>
+      <p>Belum ada data pengiriman.</p>
+    </div>
+    <div class="pagination" id="pagination"></div>
+  </div>
+</div>
+
+<!-- ===================== HALAMAN LACAK ===================== -->
+<div id="lacak" class="page hidden">
+  <div class="card lacak-card">
+    <div class="section-title"><i class="ti ti-map-pin"></i> Lacak Paket Anda</div>
+    <p class="lacak-desc">Masukkan nomor resi untuk melihat status dan riwayat perjalanan paket Anda.</p>
+    <div class="lacak-input-row">
+      <input type="text" id="no-resi" placeholder="Contoh: HP-2024-001" />
+      <button class="btn-primary" id="btn-lacak"><i class="ti ti-search"></i> Lacak</button>
+    </div>
+    <div class="lacak-error hidden" id="lacak-error">
+      <i class="ti ti-alert-circle"></i> No. resi tidak ditemukan.
+    </div>
+    <div class="track-result hidden" id="track-result">
+      <div class="tr-header">
+        <div>
+          <div class="tr-id" id="tr-id"></div>
+          <div class="tr-sub" id="tr-sub"></div>
+        </div>
+        <span class="badge" id="tr-status"></span>
+      </div>
+      <div class="tr-grid" id="tr-grid"></div>
+      <div class="timeline-title">Riwayat Perjalanan</div>
+      <div class="timeline" id="lacak-timeline"></div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/dexie@3.2.7/dist/dexie.min.js"></script>
+<script>
+/* ============================================================
+   HazzParcel — app.js
+   Database: Dexie.js (IndexedDB)
+   ============================================================ */
+
+/* ---- DATABASE SETUP ---- */
+const db = new Dexie('HazzParcelDB');
+db.version(1).stores({
+  paket: '++id, resi, pengirim, penerima, kotaTujuan, layanan, status, createdAt'
+});
+
+/* ---- TARIF & TIMELINE LOGIC ---- */
+const TARIF = { 'Same Day': 15000, 'Express': 12000, 'Reguler': 5000, 'Kargo': 8000 };
+
+function hitungOngkir(berat, layanan, asuransi) {
+  const base = (TARIF[layanan] || 5000) * Math.max(parseFloat(berat) || 1, 1);
+  return Math.round(base) + (asuransi === 'Ya' ? 5000 : 0);
+}
+
+function formatRp(angka) {
+  return 'Rp ' + Number(angka).toLocaleString('id-ID');
+}
+
+function generateResi() {
+  const now = new Date();
+  const seq = String(Math.floor(Math.random() * 900) + 100);
+  return `HP-${now.getFullYear()}-${seq}`;
+}
+
+function badgeClass(status) {
+  if (status === 'Terkirim')         return 'badge-green';
+  if (status === 'Dalam Perjalanan') return 'badge-blue';
+  if (status === 'Diproses')         return 'badge-amber';
+  if (status === 'Dibatalkan')       return 'badge-red';
+  return 'badge-amber';
+}
+
+function buildTimeline(paket) {
+  const steps = [
+    { label: 'Paket diterima di gudang asal', loc: `${paket.kotaPengirim || 'Kota Asal'}`, status: 'done' },
+    { label: 'Paket dalam proses sortir',     loc: 'Gudang Sortir',                         status: 'done' },
+    { label: 'Paket berangkat menuju tujuan', loc: 'Hub Pengiriman',                        status: paket.status === 'Diproses' ? 'pending' : 'active' },
+    { label: 'Paket tiba di kota tujuan',     loc: paket.kotaTujuan,                        status: paket.status === 'Terkirim' ? 'done' : 'pending' },
+    { label: 'Paket diterima oleh penerima',  loc: paket.kotaTujuan,                        status: paket.status === 'Terkirim' ? 'done' : 'pending' },
+  ];
+
+  const created = new Date(paket.createdAt);
+  return steps.map((step, i) => {
+    const t = new Date(created.getTime() + i * 3600000 * 2);
+    const timeStr = step.status !== 'pending'
+      ? t.toLocaleString('id-ID', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })
+      : `Estimasi: ${t.toLocaleString('id-ID', { day:'2-digit', month:'short', hour:'2-digit', minute:'2-digit' })}`;
+    return { ...step, time: timeStr };
+  });
+}
+
+function renderTimeline(steps, container) {
+  container.innerHTML = '';
+  steps.forEach((step, i) => {
+    const isLast = i === steps.length - 1;
+    const isPending = step.status === 'pending';
+    const div = document.createElement('div');
+    div.className = 'tl-item' + (isPending ? ' pending-item' : '');
+    div.innerHTML = `
+      <div class="tl-dot-wrap">
+        <div class="tl-dot ${step.status}"></div>
+        ${!isLast ? '<div class="tl-line"></div>' : ''}
+      </div>
+      <div class="tl-content">
+        <p>${step.label}</p>
+        <span>${step.loc} · ${step.time}</span>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+}
+
+/* ---- SEED DATA (run once) ---- */
+async function seedIfEmpty() {
+  const count = await db.paket.count();
+  if (count > 0) return;
+
+  const seeds = [
+    { pengirim:'Andi Pratama', telpPengirim:'081234567890', alamatPengirim:'Jl. Merdeka 1, Tasikmalaya', kotaPengirim:'Tasikmalaya', penerima:'Fitri Yani', telpPenerima:'085678901234', alamatTujuan:'Jl. Mawar 10, Surabaya', kotaTujuan:'Surabaya', jenis:'Paket Sedang (1–5 kg)', berat:2, layanan:'Reguler', asuransi:'Tidak', catatan:'', ongkir:10000, status:'Terkirim' },
+    { pengirim:'Siti Rahayu', telpPengirim:'082345678901', alamatPengirim:'Jl. Kenanga 5, Garut', kotaPengirim:'Garut', penerima:'Bambang Eko', telpPenerima:'086789012345', alamatTujuan:'Jl. Anggrek 3, Bandung', kotaTujuan:'Bandung', jenis:'Paket Kecil (<1 kg)', berat:0.5, layanan:'Same Day', asuransi:'Tidak', catatan:'', ongkir:7500, status:'Dalam Perjalanan' },
+    { pengirim:'Budi Santoso', telpPengirim:'083456789012', alamatPengirim:'Jl. Sudirman 20, Bekasi', kotaPengirim:'Bekasi', penerima:'Wahyu Pratama', telpPenerima:'087890123456', alamatTujuan:'Jl. Gatot Subroto 8, Medan', kotaTujuan:'Medan', jenis:'Paket Besar (>5 kg)', berat:5, layanan:'Kargo', asuransi:'Ya', catatan:'Barang mudah pecah', ongkir:45000, status:'Dalam Perjalanan' },
+    { pengirim:'Dewi Lestari', telpPengirim:'084567890123', alamatPengirim:'Jl. Ahmad Yani 7, Bogor', kotaPengirim:'Bogor', penerima:'Agus Salim', telpPenerima:'088901234567', alamatTujuan:'Jl. Hasanuddin 15, Makassar', kotaTujuan:'Makassar', jenis:'Barang Elektronik', berat:1.2, layanan:'Express', asuransi:'Ya', catatan:'', ongkir:19400, status:'Diproses' },
+    { pengirim:'Rudi Hermawan', telpPengirim:'085678901234', alamatPengirim:'Jl. Diponegoro 3, Cirebon', kotaPengirim:'Cirebon', penerima:'Lina Marlina', telpPenerima:'089012345678', alamatTujuan:'Jl. Solo 22, Yogyakarta', kotaTujuan:'Yogyakarta', jenis:'Dokumen', berat:0.3, layanan:'Reguler', asuransi:'Tidak', catatan:'Dokumen penting', ongkir:1500, status:'Terkirim' },
+    { pengirim:'Ahmad Fauzi', telpPengirim:'086789012345', alamatPengirim:'Jl. Veteran 9, Depok', kotaPengirim:'Depok', penerima:'Rina Sari', telpPenerima:'080123456789', alamatTujuan:'Jl. Proklamasi 4, Jakarta', kotaTujuan:'Jakarta', jenis:'Paket Kecil (<1 kg)', berat:1.5, layanan:'Express', asuransi:'Tidak', catatan:'', ongkir:18000, status:'Terkirim' },
+    { pengirim:'Maya Indah', telpPengirim:'087890123456', alamatPengirim:'Jl. Pahlawan 12, Purwokerto', kotaPengirim:'Purwokerto', penerima:'Toni Wijaya', telpPenerima:'081234567891', alamatTujuan:'Jl. Pemuda 6, Semarang', kotaTujuan:'Semarang', jenis:'Makanan / Minuman', berat:0.8, layanan:'Reguler', asuransi:'Tidak', catatan:'Jangan ditumpuk', ongkir:4000, status:'Terkirim' },
+    { pengirim:'Hendra Putra', telpPengirim:'088901234567', alamatPengirim:'Jl. Cendana 2, Tangerang', kotaPengirim:'Tangerang', penerima:'Sri Mulyani', telpPenerima:'082345678902', alamatTujuan:'Jl. Musi 11, Palembang', kotaTujuan:'Palembang', jenis:'Paket Besar (>5 kg)', berat:12, layanan:'Kargo', asuransi:'Ya', catatan:'', ongkir:101000, status:'Dalam Perjalanan' },
+  ];
+
+  const now = Date.now();
+  for (let i = 0; i < seeds.length; i++) {
+    const s = seeds[i];
+    s.resi = `HP-${new Date().getFullYear()}-${String(i + 1).padStart(3, '0')}`;
+    s.createdAt = now - (seeds.length - i) * 3600000 * 8;
+    await db.paket.add(s);
+  }
+}
+
+/* ============================================================
+   NAVIGATION
+   ============================================================ */
+function showPage(pageId) {
+  // fixed: also remove .hidden
+  document.querySelectorAll(".page").forEach(p => { p.classList.remove("active"); p.classList.remove("hidden"); });
+  document.querySelectorAll(".nav-btn").forEach(b => b.classList.remove("active"));
+  const target = document.getElementById(pageId);
+  if (target) target.classList.add("active");
+  const btn2 = document.querySelector(`.nav-btn[data-page="${pageId}"]`);
+  if (btn2) btn2.classList.add("active");
+  if (pageId === "beranda") loadBeranda();
+  if (pageId === "riwayat") { currentPage = 1; loadRiwayat(); }
+}
+/* nav button clicks */
+document.body.addEventListener('click', e => {
+  const el = e.target.closest('[data-page]');
+  if (el) {
+    e.stopPropagation();
+    showPage(el.dataset.page);
+  }
+});
+
+/* ============================================================
+   BERANDA
+   ============================================================ */
+async function loadBeranda() {
+  const all       = await db.paket.toArray();
+  const terkirim  = all.filter(p => p.status === 'Terkirim').length;
+  const perjalanan= all.filter(p => p.status === 'Dalam Perjalanan').length;
+  const diproses  = all.filter(p => p.status === 'Diproses').length;
+
+  document.getElementById('stat-total').textContent      = all.length;
+  document.getElementById('stat-terkirim').textContent   = terkirim;
+  document.getElementById('stat-perjalanan').textContent = perjalanan;
+  document.getElementById('stat-diproses').textContent   = diproses;
+
+  const recent = all.sort((a, b) => b.createdAt - a.createdAt).slice(0, 7);
+  const tbody  = document.getElementById('tabel-beranda');
+  const empty  = document.getElementById('empty-beranda');
+
+  if (recent.length === 0) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    return;
+  }
+  empty.classList.add('hidden');
+  tbody.innerHTML = recent.map(p => `
+    <tr>
+      <td><strong>${p.resi}</strong></td>
+      <td>${p.pengirim}</td>
+      <td>${p.kotaTujuan}</td>
+      <td>${p.layanan}</td>
+      <td><span class="badge ${badgeClass(p.status)}">${p.status}</span></td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-success-sm" onclick="openDetail(${p.id})"><i class="ti ti-eye"></i> Detail</button>
+        </div>
+      </td>
+    </tr>
+  `).join('');
+}
+
+/* ============================================================
+   KIRIM PAKET
+   ============================================================ */
+const fieldValidasi = [
+  ['f-pengirim',        'err-pengirim',        'Nama pengirim wajib diisi'],
+  ['f-telp-pengirim',   'err-telp-pengirim',   'No. telepon pengirim wajib diisi'],
+  ['f-alamat-pengirim', 'err-alamat-pengirim', 'Alamat pengirim wajib diisi'],
+  ['f-penerima',        'err-penerima',        'Nama penerima wajib diisi'],
+  ['f-telp-penerima',   'err-telp-penerima',   'No. telepon penerima wajib diisi'],
+  ['f-kota-tujuan',     'err-kota-tujuan',     'Kota tujuan wajib diisi'],
+  ['f-alamat-tujuan',   'err-alamat-tujuan',   'Alamat tujuan wajib diisi'],
+  ['f-jenis',           'err-jenis',           'Pilih jenis paket'],
+  ['f-berat',           'err-berat',           'Berat paket wajib diisi (min 0.1 kg)'],
+  ['f-layanan',         'err-layanan',         'Pilih layanan pengiriman'],
+];
+
+function clearErrors() {
+  fieldValidasi.forEach(([fieldId, errId]) => {
+    const el = document.getElementById(fieldId);
+    const err= document.getElementById(errId);
+    if (el)  el.classList.remove('error');
+    if (err) err.textContent = '';
+  });
+}
+
+function val(id) { return (document.getElementById(id)?.value || '').trim(); }
+
+function updateOngkir() {
+  const berat   = parseFloat(val('f-berat'));
+  const layanan = val('f-layanan');
+  const asuransi= val('f-asuransi');
+  const box     = document.getElementById('ongkir-value');
+  if (berat > 0 && layanan) {
+    box.textContent = formatRp(hitungOngkir(berat, layanan, asuransi));
+  } else {
+    box.textContent = '—';
+  }
+}
+
+['f-berat', 'f-layanan', 'f-asuransi'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input', updateOngkir);
+  document.getElementById(id)?.addEventListener('change', updateOngkir);
+});
+
+document.getElementById('btn-kirim').addEventListener('click', async () => {
+  clearErrors();
+  let valid = true;
+
+  fieldValidasi.forEach(([fieldId, errId, msg]) => {
+    const el  = document.getElementById(fieldId);
+    const err = document.getElementById(errId);
+    const v   = (el?.value || '').trim();
+    let isInvalid = !v;
+    if (fieldId === 'f-berat' && (!v || parseFloat(v) < 0.1)) isInvalid = true;
+    if (isInvalid) {
+      valid = false;
+      el?.classList.add('error');
+      if (err) err.textContent = msg;
+    }
+  });
+
+  if (!valid) return;
+
+  const berat    = parseFloat(val('f-berat'));
+  const layanan  = val('f-layanan');
+  const asuransi = val('f-asuransi');
+  const ongkir   = hitungOngkir(berat, layanan, asuransi);
+
+  const paket = {
+    resi:           generateResi(),
+    pengirim:       val('f-pengirim'),
+    telpPengirim:   val('f-telp-pengirim'),
+    alamatPengirim: val('f-alamat-pengirim'),
+    kotaPengirim:   val('f-alamat-pengirim').split(',').pop().trim() || 'Tasikmalaya',
+    penerima:       val('f-penerima'),
+    telpPenerima:   val('f-telp-penerima'),
+    alamatTujuan:   val('f-alamat-tujuan'),
+    kotaTujuan:     val('f-kota-tujuan'),
+    jenis:          val('f-jenis'),
+    berat,
+    layanan,
+    asuransi,
+    catatan:        val('f-catatan'),
+    ongkir,
+    status:         'Diproses',
+    createdAt:      Date.now(),
+  };
+
+  await db.paket.add(paket);
+
+  const alertEl = document.getElementById('alert-kirim');
+  document.getElementById('alert-kirim-msg').textContent =
+    `Paket berhasil didaftarkan! No. Resi: ${paket.resi} — Ongkir: ${formatRp(ongkir)}`;
+  alertEl.classList.remove('hidden');
+  setTimeout(() => alertEl.classList.add('hidden'), 6000);
+
+  resetForm();
+});
+
+function resetForm() {
+  ['f-pengirim','f-telp-pengirim','f-alamat-pengirim',
+   'f-penerima','f-telp-penerima','f-kota-tujuan','f-alamat-tujuan',
+   'f-catatan','f-berat'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.value = '';
+  });
+  ['f-jenis','f-layanan'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.selectedIndex = 0;
+  });
+  const asuransi = document.getElementById('f-asuransi');
+  if (asuransi) asuransi.selectedIndex = 0;
+  document.getElementById('ongkir-value').textContent = '—';
+  clearErrors();
+}
+
+document.getElementById('btn-reset').addEventListener('click', resetForm);
+
+/* ============================================================
+   RIWAYAT — dengan pagination & filter
+   ============================================================ */
+let currentPage = 1;
+const PER_PAGE  = 8;
+
+async function loadRiwayat() {
+  const q       = document.getElementById('search-riwayat').value.toLowerCase();
+  const stFilt  = document.getElementById('filter-status').value;
+  const lyFilt  = document.getElementById('filter-layanan').value;
+
+  let all = await db.paket.orderBy('createdAt').reverse().toArray();
+
+  if (q)      all = all.filter(p =>
+    p.resi.toLowerCase().includes(q) ||
+    p.pengirim.toLowerCase().includes(q) ||
+    p.penerima.toLowerCase().includes(q) ||
+    p.kotaTujuan.toLowerCase().includes(q)
+  );
+  if (stFilt) all = all.filter(p => p.status === stFilt);
+  if (lyFilt) all = all.filter(p => p.layanan === lyFilt);
+
+  const totalPages = Math.max(1, Math.ceil(all.length / PER_PAGE));
+  if (currentPage > totalPages) currentPage = totalPages;
+
+  const paged  = all.slice((currentPage - 1) * PER_PAGE, currentPage * PER_PAGE);
+  const tbody  = document.getElementById('tabel-riwayat');
+  const empty  = document.getElementById('empty-riwayat');
+
+  if (paged.length === 0) {
+    tbody.innerHTML = '';
+    empty.classList.remove('hidden');
+    document.getElementById('pagination').innerHTML = '';
+    return;
+  }
+  empty.classList.add('hidden');
+
+  tbody.innerHTML = paged.map(p => {
+    const canCancel = p.status === 'Diproses';
+    const canDeliver= p.status === 'Dalam Perjalanan';
+    return `
+    <tr>
+      <td><strong>${p.resi}</strong></td>
+      <td>${p.pengirim}</td>
+      <td>${p.penerima}</td>
+      <td>${p.kotaTujuan}</td>
+      <td>${p.layanan}</td>
+      <td>${p.berat} kg</td>
+      <td>${formatRp(p.ongkir)}</td>
+      <td><span class="badge ${badgeClass(p.status)}">${p.status}</span></td>
+      <td>
+        <div class="action-btns">
+          <button class="btn-success-sm" onclick="openDetail(${p.id})"><i class="ti ti-eye"></i></button>
+          ${canDeliver ? `<button class="btn-amber-sm" onclick="updateStatus(${p.id},'Terkirim')"><i class="ti ti-check"></i></button>` : ''}
+          ${canCancel  ? `<button class="btn-danger-sm" onclick="updateStatus(${p.id},'Dibatalkan')"><i class="ti ti-x"></i></button>` : ''}
+          <button class="btn-danger-sm" onclick="hapusPaket(${p.id})"><i class="ti ti-trash"></i></button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  /* pagination */
+  const pag = document.getElementById('pagination');
+  pag.innerHTML = '';
+  for (let i = 1; i <= totalPages; i++) {
+    const btn = document.createElement('button');
+    btn.textContent = i;
+    if (i === currentPage) btn.classList.add('active');
+    btn.addEventListener('click', () => { currentPage = i; loadRiwayat(); });
+    pag.appendChild(btn);
+  }
+}
+
+async function updateStatus(id, newStatus) {
+  const label = newStatus === 'Terkirim' ? 'tandai sebagai Terkirim' : 'batalkan';
+  if (!confirm(`Yakin ingin ${label} paket ini?`)) return;
+  await db.paket.update(id, { status: newStatus });
+  loadRiwayat();
+  loadBeranda();
+}
+
+async function hapusPaket(id) {
+  if (!confirm('Hapus data pengiriman ini? Tindakan tidak dapat dibatalkan.')) return;
+  await db.paket.delete(id);
+  loadRiwayat();
+  loadBeranda();
+}
+
+document.getElementById('btn-hapus-semua').addEventListener('click', async () => {
+  const count = await db.paket.count();
+  if (count === 0) { alert('Tidak ada data untuk dihapus.'); return; }
+  if (!confirm(`Hapus semua ${count} data pengiriman? Tindakan ini tidak dapat dibatalkan.`)) return;
+  await db.paket.clear();
+  currentPage = 1;
+  loadRiwayat();
+  loadBeranda();
+});
+
+['search-riwayat', 'filter-status', 'filter-layanan'].forEach(id => {
+  document.getElementById(id)?.addEventListener('input',  () => { currentPage = 1; loadRiwayat(); });
+  document.getElementById(id)?.addEventListener('change', () => { currentPage = 1; loadRiwayat(); });
+});
+
+/* ============================================================
+   LACAK PAKET
+   ============================================================ */
+document.getElementById('btn-lacak').addEventListener('click', lacakPaket);
+document.getElementById('no-resi').addEventListener('keydown', e => {
+  if (e.key === 'Enter') lacakPaket();
+});
+
+async function lacakPaket() {
+  const input    = document.getElementById('no-resi').value.trim().toUpperCase();
+  const errorEl  = document.getElementById('lacak-error');
+  const resultEl = document.getElementById('track-result');
+
+  errorEl.classList.add('hidden');
+  resultEl.classList.add('hidden');
+
+  if (!input) return;
+
+  const paket = await db.paket.where('resi').equals(input).first();
+  if (!paket) {
+    errorEl.querySelector
+      ? (errorEl.innerHTML = `<i class="ti ti-alert-circle"></i> No. resi <strong>${input}</strong> tidak ditemukan.`)
+      : null;
+    errorEl.classList.remove('hidden');
+    return;
+  }
+
+  document.getElementById('tr-id').textContent  = paket.resi;
+  document.getElementById('tr-sub').textContent = `${paket.layanan} · ${paket.kotaTujuan}`;
+
+  const badge = document.getElementById('tr-status');
+  badge.textContent = paket.status;
+  badge.className   = 'badge ' + badgeClass(paket.status);
+
+  document.getElementById('tr-grid').innerHTML = `
+    <div class="tr-item"><div class="lbl">Pengirim</div><div class="val">${paket.pengirim}</div></div>
+    <div class="tr-item"><div class="lbl">Penerima</div><div class="val">${paket.penerima}</div></div>
+    <div class="tr-item"><div class="lbl">Berat</div><div class="val">${paket.berat} kg</div></div>
+    <div class="tr-item"><div class="lbl">Ongkir</div><div class="val">${formatRp(paket.ongkir)}</div></div>
+    <div class="tr-item"><div class="lbl">Asuransi</div><div class="val">${paket.asuransi}</div></div>
+    <div class="tr-item"><div class="lbl">Jenis</div><div class="val">${paket.jenis}</div></div>
+  `;
+
+  const steps = buildTimeline(paket);
+  renderTimeline(steps, document.getElementById('lacak-timeline'));
+  resultEl.classList.remove('hidden');
+}
+
+/* ============================================================
+   MODAL DETAIL
+   ============================================================ */
+async function openDetail(id) {
+  const p = await db.paket.get(id);
+  if (!p) return;
+
+  document.getElementById('modal-resi').textContent = p.resi;
+  document.getElementById('modal-sub').textContent  =
+    `${p.layanan} · ${p.kotaTujuan} · ${new Date(p.createdAt).toLocaleDateString('id-ID', {day:'2-digit',month:'long',year:'numeric'})}`;
+
+  document.getElementById('modal-grid').innerHTML = `
+    <div class="modal-item"><div class="lbl">Pengirim</div><div class="val">${p.pengirim} (${p.telpPengirim})</div></div>
+    <div class="modal-item"><div class="lbl">Penerima</div><div class="val">${p.penerima} (${p.telpPenerima})</div></div>
+    <div class="modal-item"><div class="lbl">Alamat Pengirim</div><div class="val">${p.alamatPengirim}</div></div>
+    <div class="modal-item"><div class="lbl">Alamat Tujuan</div><div class="val">${p.alamatTujuan}, ${p.kotaTujuan}</div></div>
+    <div class="modal-item"><div class="lbl">Jenis Paket</div><div class="val">${p.jenis}</div></div>
+    <div class="modal-item"><div class="lbl">Berat</div><div class="val">${p.berat} kg</div></div>
+    <div class="modal-item"><div class="lbl">Asuransi</div><div class="val">${p.asuransi}</div></div>
+    <div class="modal-item"><div class="lbl">Ongkir</div><div class="val">${formatRp(p.ongkir)}</div></div>
+    <div class="modal-item"><div class="lbl">Status</div><div class="val"><span class="badge ${badgeClass(p.status)}">${p.status}</span></div></div>
+    ${p.catatan ? `<div class="modal-item" style="grid-column:1/-1"><div class="lbl">Catatan</div><div class="val">${p.catatan}</div></div>` : ''}
+  `;
+
+  const steps = buildTimeline(p);
+  renderTimeline(steps, document.getElementById('modal-timeline'));
+
+  document.getElementById('modal-overlay').classList.remove('hidden');
+}
+
+function closeModal() {
+  document.getElementById('modal-overlay').classList.add('hidden');
+}
+
+document.getElementById('modal-close').addEventListener('click', closeModal);
+document.getElementById('modal-tutup').addEventListener('click', closeModal);
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === document.getElementById('modal-overlay')) closeModal();
+});
+
+document.getElementById('modal-cetak').addEventListener('click', () => window.print());
+
+/* ============================================================
+   INIT
+   ============================================================ */
+(async () => {
+  await seedIfEmpty();
+  showPage('beranda');
+})();
+</script>
+</body>
+</html>
